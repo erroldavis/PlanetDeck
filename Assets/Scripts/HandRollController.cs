@@ -163,7 +163,18 @@ public class HandRollController : MonoBehaviour
             $"{die.name} launched with result {die.ResultValue}."
         );
 
+        die.LaunchArrivedEvent.RemoveListener(HandleLaunchArrived);
+        die.LaunchArrivedEvent.AddListener(HandleLaunchArrived);
         die.RequestLaunch();
+    }
+
+    private void HandleLaunchArrived(DieBase die)
+    {
+        die.LaunchArrivedEvent.RemoveListener(HandleLaunchArrived);
+
+        Debug.Log(
+            $"{die.name} arrived at planet with result {die.ResultValue}."
+        );
     }
 
     private IEnumerator PlayHandEntrySequence()

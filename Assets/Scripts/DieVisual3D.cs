@@ -6,9 +6,13 @@ public class DieVisual3D : MonoBehaviour
 {
     [Header("Hand Entry")]
     [SerializeField] private Transform handLaunchPoint;
-    
+
+    [Header("Planet Launch")]
+    [SerializeField] private Transform planetLaunchTarget;
 
     private bool isEnteringHand;
+    private bool isLaunching;
+    private bool isAtPlanet;
     [SerializeField] private DieBase target;
 
     [Header("Follow")]
@@ -64,6 +68,7 @@ public class DieVisual3D : MonoBehaviour
         new Vector2Int(2, 5);
 
     private Coroutine handEntryRoutine;
+    private Coroutine planetLaunchRoutine;
 
 
     private Vector3 lastPosition;
@@ -109,6 +114,7 @@ public class DieVisual3D : MonoBehaviour
         target.EndDragEvent.AddListener(HandleEndDrag);
         target.SelectEvent.AddListener(HandleSelect);
         target.HandEntryRequestedEvent.AddListener(HandleHandEntryRequested);
+        target.LaunchRequestedEvent.AddListener(HandleLaunchRequested);
     }
 
     private void UnsubscribeFromTarget()
@@ -124,6 +130,7 @@ public class DieVisual3D : MonoBehaviour
         target.EndDragEvent.RemoveListener(HandleEndDrag);
         target.SelectEvent.RemoveListener(HandleSelect);
         target.HandEntryRequestedEvent.RemoveListener(HandleHandEntryRequested);
+        target.LaunchRequestedEvent.RemoveListener(HandleLaunchRequested);
     }
 
     private void HandleHandEntryRequested(DieBase die)
@@ -140,6 +147,30 @@ public class DieVisual3D : MonoBehaviour
 
         handEntryRoutine = StartCoroutine(
             PlayHandRoll()
+        );
+    }
+
+    private void HandleLaunchRequested(DieBase die)
+    {
+        if (die != target ||
+            planetLaunchTarget == null ||
+            rollPivot == null)
+        {
+            return;
+        }
+
+        if (handEntryRoutine != null)
+        {
+            StopCoroutine(handEntryRoutine);
+            handEntryRoutine = null;
+            isEnteringHand = false;
+        }
+
+        if (planetLaunchRoutine != null)
+            StopCoroutine(planetLaunchRoutine);
+
+        planetLaunchRoutine = StartCoroutine(
+            PlayPlanetLaunch()
         );
     }
 
@@ -183,10 +214,12 @@ public class DieVisual3D : MonoBehaviour
         if (target == null)
             return;
 
-        if (!isEnteringHand)
+        if (!isEnteringHand && !isLaunching && !isAtPlanet)
             SmoothFollow();
 
-        SmoothRootRotation();
+        if (!isLaunching && !isAtPlanet)
+            SmoothRootRotation();
+
         ApplyPivotRotation();
         ApplyFeedbackPose();
     }
@@ -512,5 +545,120 @@ public class DieVisual3D : MonoBehaviour
         handEntryRoutine = null;
 
         target.NotifyHandEntryArrived();
+    }
+
+    private IEnumerator PlayPlanetLaunch()
+    {
+        isLaunching = true;
+        isAtPlanet = false;
+
+        Vector3 startPosition = transform.position;
+        Vector3 endPosition = planetLaunchTarget.position;
+
+        float minimumDuration = Mathf.Min(
+            travelDurationRange.x,
+            travelDurationRange.y
+        );
+
+        float maximumDuration = Mathf.Max(
+            travelDurationRange.x,
+            travelDurationRange.y
+        );
+
+        float duration = Random.Range(
+            minimumDuration,
+            maximumDuration
+        );
+
+        float minimumArc = Mathf.Min(
+            arcHeightRange.x,
+            arcHeightRange.y
+        );
+
+        float maximumArc = Mathf.Max(
+            arcHeightRange.x,
+            arcHeightRange.y
+        );
+
+        float arcHeight = Random.Range(
+            minimumArc,
+            maximumArc
+        );
+
+        int minimumTurns = Mathf.Min(
+            spinTurnsRange.x,
+            spinTurnsRange.y
+        );
+
+        int maximumTurns = Mathf.Max(
+            spinTurnsRange.x,
+            spinTurnsRange.y
+        );
+
+        int spinTurns = Random.Range(
+            minimumTurns,
+            maximumTurns + 1
+        );
+
+        Vector3 spinAxis = Random.onUnitSphere.normalized;
+
+        rollPivot.localRotation = Quaternion.identity;
+        lastPosition = transform.position;
+
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+
+            float normalizedTime = Mathf.Clamp01(
+                elapsed / duration
+            );
+
+            float movementProgress = Mathf.SmoothStep(
+                0f,
+                1f,
+                normalizedTime
+            );
+
+            Vector3 position = Vector3.Lerp(
+                startPosition,
+                endPosition,
+                movementProgress
+            );
+
+            float arcOffset =
+                Mathf.Sin(normalizedTime * Mathf.PI) *
+                arcHeight;
+
+            position += Vector3.up * arcOffset;
+
+            transform.position = position;
+
+            // Fast initial tumble that slows as the die approaches.
+            float spinProgress =
+                1f - Mathf.Pow(1f - normalizedTime, 2f);
+
+            float spinAngle =
+                360f * spinTurns * spinProgress;
+
+            rollPivot.localRotation =
+                Quaternion.AngleAxis(
+                    spinAngle,
+                    spinAxis
+                );
+
+            yield return null;
+        }
+
+        transform.position = planetLaunchTarget.position;
+        rollPivot.localRotation = Quaternion.identity;
+
+        lastPosition = transform.position;
+        isLaunching = false;
+        isAtPlanet = true;
+        planetLaunchRoutine = null;
+
+        target.NotifyLaunchArrived();
     }
 }

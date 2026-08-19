@@ -229,6 +229,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DieVisual3D
   handLaunchPoint: {fileID: 1005169359}
+  planetLaunchTarget: {fileID: 335188543}
   target: {fileID: 1874992530}
   followSpeed: 15
   rotationPivot: {fileID: 117486297}
@@ -1052,7 +1053,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 577928962}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 197302293}
+        m_TargetAssemblyTypeName: HandRollController, Assembly-CSharp
+        m_MethodName: Launch
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &577928962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1492,6 +1505,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DieVisual3D
   handLaunchPoint: {fileID: 1005169359}
+  planetLaunchTarget: {fileID: 335188543}
   target: {fileID: 2003229348}
   followSpeed: 15
   rotationPivot: {fileID: 634706182}
@@ -2970,6 +2984,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DieVisual3D
   handLaunchPoint: {fileID: 1005169359}
+  planetLaunchTarget: {fileID: 335188543}
   target: {fileID: 691805695}
   followSpeed: 15
   rotationPivot: {fileID: 1523187}
@@ -3463,6 +3478,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DieVisual3D
   handLaunchPoint: {fileID: 1005169359}
+  planetLaunchTarget: {fileID: 335188543}
   target: {fileID: 992984906}
   followSpeed: 15
   rotationPivot: {fileID: 2025967155}
