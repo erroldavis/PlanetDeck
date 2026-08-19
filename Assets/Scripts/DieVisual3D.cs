@@ -142,8 +142,23 @@ public class DieVisual3D : MonoBehaviour
             return;
         }
 
+        // Release the visual from the planet.
+        isAtPlanet = false;
+        isLaunching = false;
+
+        if (planetLaunchRoutine != null)
+        {
+            StopCoroutine(planetLaunchRoutine);
+            planetLaunchRoutine = null;
+        }
+
+        rollPivot.localRotation = Quaternion.identity;
+
         if (handEntryRoutine != null)
+        {
             StopCoroutine(handEntryRoutine);
+            handEntryRoutine = null;
+        }
 
         handEntryRoutine = StartCoroutine(
             PlayHandRoll()
@@ -152,10 +167,15 @@ public class DieVisual3D : MonoBehaviour
 
     private void HandleLaunchRequested(DieBase die)
     {
-        if (die != target ||
-            planetLaunchTarget == null ||
-            rollPivot == null)
+        if (die != target)
+            return;
+
+        if (planetLaunchTarget == null || rollPivot == null)
         {
+            Debug.LogWarning(
+                $"{name}: Launch visual ignored. " +
+                "Assign Planet Launch Target and Roll Pivot."
+            );
             return;
         }
 

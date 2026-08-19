@@ -556,6 +556,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10b7857538b3a1f4a9a5a35fcc9c12a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HandRollController
+  planet: {fileID: 541068518}
   rollService: {fileID: 164510142}
   hand: {fileID: 596398533}
   rollProfile: {fileID: 11400000, guid: 1ba9a3def3dab51469d4c3c86c16dc8c, type: 2}
@@ -948,6 +949,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 541068516}
+  - component: {fileID: 541068518}
+  - component: {fileID: 541068517}
   m_Layer: 0
   m_Name: Planet
   m_TagString: Untagged
@@ -964,13 +967,46 @@ Transform:
   m_GameObject: {fileID: 541068515}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 10.88, z: 36.19}
+  m_LocalPosition: {x: 0, y: 6, z: 15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 335188543}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &541068517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 541068515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a72c055930ed684d97348326816a73f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlanetVisualReaction
+  reaction: {fileID: 541068518}
+  planetVisual: {fileID: 541068516}
+  growthPerPoint: 0.03
+  growthSpeed: 6
+  maximumScaleMultiplier: 1.5
+--- !u!114 &541068518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 541068515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01dd2eca3f5ab7847a9eee0eb6a20f28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlanetReactionController
+  accumulatedValue: 0
+  ValueChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &577928959
 GameObject:
   m_ObjectHideFlags: 0
@@ -1675,6 +1711,12 @@ MonoBehaviour:
   SelectEvent:
     m_PersistentCalls:
       m_Calls: []
+  LaunchRequestedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  LaunchArrivedEvent:
+    m_PersistentCalls:
+      m_Calls: []
   HandEntryRequestedEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -1852,7 +1894,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 335188543}
@@ -2139,6 +2181,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   SelectEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  LaunchRequestedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  LaunchArrivedEvent:
     m_PersistentCalls:
       m_Calls: []
   HandEntryRequestedEvent:
@@ -3153,6 +3201,12 @@ MonoBehaviour:
   SelectEvent:
     m_PersistentCalls:
       m_Calls: []
+  LaunchRequestedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  LaunchArrivedEvent:
+    m_PersistentCalls:
+      m_Calls: []
   HandEntryRequestedEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -3299,6 +3353,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   SelectEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  LaunchRequestedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  LaunchArrivedEvent:
     m_PersistentCalls:
       m_Calls: []
   HandEntryRequestedEvent:

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class HandRollController : MonoBehaviour
 {
+    [SerializeField] private PlanetReactionController planet;
     [SerializeField] private DiceRollService rollService;
     [SerializeField] private DieHandContainer hand;
     [SerializeField] private HandRollProfile rollProfile;
@@ -172,9 +173,12 @@ public class HandRollController : MonoBehaviour
     {
         die.LaunchArrivedEvent.RemoveListener(HandleLaunchArrived);
 
-        Debug.Log(
-            $"{die.name} arrived at planet with result {die.ResultValue}."
-        );
+        Debug.Log($"{die.name} arrived");
+
+        if (planet == null)
+            return;
+
+        planet.ReceiveDie(die);
     }
 
     private IEnumerator PlayHandEntrySequence()
