@@ -51,6 +51,20 @@ public class InvaderController : MonoBehaviour
     private Material invaderMaterial;
     private Color originalColor;
 
+    [Header("Player Impact")]
+    [SerializeField] private Transform dieImpactTarget;
+
+    public Transform DieImpactTarget
+    {
+        get
+        {
+            if (dieImpactTarget != null)
+                return dieImpactTarget;
+
+            return transform;
+        }
+    }
+
     private void Start()
     {
         if (planet == null)

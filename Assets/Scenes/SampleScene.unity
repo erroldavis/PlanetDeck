@@ -229,7 +229,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DieVisual3D
   handLaunchPoint: {fileID: 1005169359}
-  planetLaunchTarget: {fileID: 335188543}
+  battle: {fileID: 1309465585}
   target: {fileID: 1874992530}
   followSpeed: 15
   rotationPivot: {fileID: 117486297}
@@ -560,6 +560,7 @@ MonoBehaviour:
   rollService: {fileID: 164510142}
   hand: {fileID: 596398533}
   rollProfile: {fileID: 11400000, guid: 1ba9a3def3dab51469d4c3c86c16dc8c, type: 2}
+  battle: {fileID: 0}
 --- !u!1 &218637537
 GameObject:
   m_ObjectHideFlags: 0
@@ -1559,7 +1560,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DieVisual3D
   handLaunchPoint: {fileID: 1005169359}
-  planetLaunchTarget: {fileID: 335188543}
+  battle: {fileID: 1309465585}
   target: {fileID: 2003229348}
   followSpeed: 15
   rotationPivot: {fileID: 634706182}
@@ -2690,6 +2691,51 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1295663821}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1309465583
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1309465584}
+  - component: {fileID: 1309465585}
+  m_Layer: 0
+  m_Name: GateABattleController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1309465584
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1309465583}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1768281227}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1309465585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1309465583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a7c10d293496e940b0934251a84377b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GateABattleController
+  activeInvader: {fileID: 1768281226}
 --- !u!1 &1494167651
 GameObject:
   m_ObjectHideFlags: 0
@@ -3171,7 +3217,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DieVisual3D
   handLaunchPoint: {fileID: 1005169359}
-  planetLaunchTarget: {fileID: 335188543}
+  battle: {fileID: 1309465585}
   target: {fileID: 691805695}
   followSpeed: 15
   rotationPivot: {fileID: 1523187}
@@ -3306,6 +3352,7 @@ MonoBehaviour:
   projectileHitDistance: 0.05
   repositionAngle: 90
   repositionSpeed: 120
+  dieImpactTarget: {fileID: 2081234687}
 --- !u!4 &1768281227
 Transform:
   m_ObjectHideFlags: 0
@@ -3322,6 +3369,8 @@ Transform:
   - {fileID: 1910737299}
   - {fileID: 805451328}
   - {fileID: 1157244427}
+  - {fileID: 2081234687}
+  - {fileID: 1309465584}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1874992528
@@ -3854,7 +3903,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DieVisual3D
   handLaunchPoint: {fileID: 1005169359}
-  planetLaunchTarget: {fileID: 335188543}
+  battle: {fileID: 1309465585}
   target: {fileID: 992984906}
   followSpeed: 15
   rotationPivot: {fileID: 2025967155}
@@ -3959,6 +4008,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2081234686
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2081234687}
+  m_Layer: 0
+  m_Name: DieImpactTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2081234687
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2081234686}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1768281227}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

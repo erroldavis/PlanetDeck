@@ -8,6 +8,7 @@ public class HandRollController : MonoBehaviour
     [SerializeField] private DiceRollService rollService;
     [SerializeField] private DieHandContainer hand;
     [SerializeField] private HandRollProfile rollProfile;
+    [SerializeField] private GateABattleController battle;
 
     private Coroutine entrySequence;
 
@@ -178,7 +179,16 @@ public class HandRollController : MonoBehaviour
         if (planet == null)
             return;
 
-        planet.ReceiveDie(die);
+        if (battle != null)
+        {
+            battle.ReceiveDieImpact(die);
+        }
+        else
+        {
+            Debug.LogWarning(
+                "Launch arrived, but Battle is unassigned."
+            );
+        }
     }
 
     private IEnumerator PlayHandEntrySequence()

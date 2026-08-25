@@ -8,7 +8,9 @@ public class DieVisual3D : MonoBehaviour
     [SerializeField] private Transform handLaunchPoint;
 
     [Header("Planet Launch")]
-    [SerializeField] private Transform planetLaunchTarget;
+    [SerializeField] private GateABattleController battle;
+
+    private Transform activeLaunchTarget;
 
     private bool isEnteringHand;
     private bool isLaunching;
@@ -145,6 +147,7 @@ public class DieVisual3D : MonoBehaviour
         // Release the visual from the planet.
         isAtPlanet = false;
         isLaunching = false;
+        activeLaunchTarget = null;
 
         if (planetLaunchRoutine != null)
         {
@@ -167,27 +170,32 @@ public class DieVisual3D : MonoBehaviour
 
     private void HandleLaunchRequested(DieBase die)
     {
-        if (die != target)
+        if (die != target || rollPivot == null)
             return;
 
-        if (planetLaunchTarget == null || rollPivot == null)
+        if (battle == null)
         {
             Debug.LogWarning(
-                $"{name}: Launch visual ignored. " +
-                "Assign Planet Launch Target and Roll Pivot."
+                $"{name} cannot launch because Battle is unassigned."
             );
+
             return;
         }
 
-        if (handEntryRoutine != null)
+        if (!battle.TryGetActiveLaunchTarget(
+                out activeLaunchTarget))
         {
-            StopCoroutine(handEntryRoutine);
-            handEntryRoutine = null;
-            isEnteringHand = false;
+            Debug.LogWarning(
+                $"{name} cannot launch because there is no active target."
+            );
+
+            return;
         }
 
         if (planetLaunchRoutine != null)
             StopCoroutine(planetLaunchRoutine);
+
+        isAtPlanet = false;
 
         planetLaunchRoutine = StartCoroutine(
             PlayPlanetLaunch()
@@ -233,6 +241,12 @@ public class DieVisual3D : MonoBehaviour
     {
         if (target == null)
             return;
+
+        if (isAtPlanet && activeLaunchTarget != null)
+        {
+            transform.position = activeLaunchTarget.position;
+            return;
+        }
 
         if (!isEnteringHand && !isLaunching && !isAtPlanet)
             SmoothFollow();
@@ -573,7 +587,15 @@ public class DieVisual3D : MonoBehaviour
         isAtPlanet = false;
 
         Vector3 startPosition = transform.position;
-        Vector3 endPosition = planetLaunchTarget.position;
+        if (activeLaunchTarget == null)
+        {
+            isLaunching = false;
+            planetLaunchRoutine = null;
+            yield break;
+        }
+
+        Vector3 endPosition =
+            activeLaunchTarget.position;
 
         float minimumDuration = Mathf.Min(
             travelDurationRange.x,
@@ -671,7 +693,8 @@ public class DieVisual3D : MonoBehaviour
             yield return null;
         }
 
-        transform.position = planetLaunchTarget.position;
+        if (activeLaunchTarget != null)
+            transform.position = activeLaunchTarget.position;
         rollPivot.localRotation = Quaternion.identity;
 
         lastPosition = transform.position;
