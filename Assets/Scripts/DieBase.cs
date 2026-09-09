@@ -3,6 +3,27 @@ using System.Collections;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
+public enum MaterialDieType
+{
+    Unassigned,
+    Worldstone,
+    Tidal,
+    Coreheart,
+    SkyForge,
+    Lifeweave,
+    Worldfire,
+    Stormcall
+}
+
+public enum MaterialCombatRole
+{
+    Unassigned,
+    Attack,
+    Defend,
+    Control,
+    Interrupt
+}
+
 [RequireComponent(typeof(Collider))]
 public class DieBase : MonoBehaviour,
     IPointerEnterHandler,
@@ -13,6 +34,20 @@ public class DieBase : MonoBehaviour,
     IDragHandler,
     IEndDragHandler
 {
+    [Header("Material Identity")]
+    [SerializeField] private MaterialDieType materialType;
+    [SerializeField] private MaterialCombatRole combatRole;
+
+    public MaterialDieType MaterialType =>
+        materialType;
+
+    public MaterialCombatRole CombatRole =>
+        combatRole;
+
+    public bool HasMaterialIdentity =>
+        materialType != MaterialDieType.Unassigned &&
+        combatRole != MaterialCombatRole.Unassigned;
+
     [Header("Slot")]
     [SerializeField] private Transform homeSlot;
     [SerializeField] private Transform dragPlane;
@@ -191,6 +226,27 @@ public class DieBase : MonoBehaviour,
     private void TestClearResult()
     {
         ClearResult();
+    }
+
+    [ContextMenu("Test/Show Material Identity")]
+    private void TestShowMaterialIdentity()
+    {
+        if (!HasMaterialIdentity)
+        {
+            Debug.LogWarning(
+                $"{name} has an incomplete Material identity.",
+                this
+            );
+
+            return;
+        }
+
+        Debug.Log(
+            $"{name}: Material = {materialType}, " +
+            $"Role = {combatRole}, " +
+            $"Result = {resultValue}.",
+            this
+        );
     }
 
     public void Deselect()

@@ -1698,6 +1698,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 845d3693410f73347a3a1e418128de92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DieBase
+  materialType: 3
+  combatRole: 2
   homeSlot: {fileID: 1282948007}
   dragPlane: {fileID: 1673369582}
   interactionCamera: {fileID: 330585545}
@@ -2257,6 +2259,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 845d3693410f73347a3a1e418128de92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DieBase
+  materialType: 1
+  combatRole: 1
   homeSlot: {fileID: 756572268}
   dragPlane: {fileID: 1673369582}
   interactionCamera: {fileID: 330585545}
@@ -2792,6 +2796,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GateABattleController
   activeInvader: {fileID: 1768281226}
+  planetMaterialTarget: {fileID: 335188543}
+  currentPhase: 0
 --- !u!1 &1494167651
 GameObject:
   m_ObjectHideFlags: 0
@@ -3476,6 +3482,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 845d3693410f73347a3a1e418128de92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DieBase
+  materialType: 2
+  combatRole: 3
   homeSlot: {fileID: 1494880209}
   dragPlane: {fileID: 1673369582}
   interactionCamera: {fileID: 330585545}
@@ -3744,6 +3752,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 845d3693410f73347a3a1e418128de92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DieBase
+  materialType: 4
+  combatRole: 4
   homeSlot: {fileID: 2145734}
   dragPlane: {fileID: 1673369582}
   interactionCamera: {fileID: 330585545}

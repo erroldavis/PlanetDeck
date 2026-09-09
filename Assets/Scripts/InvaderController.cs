@@ -1,14 +1,16 @@
 using UnityEngine;
 
+
+public enum InvaderState
+{
+    Move,
+    Telegraph,
+    Attack,
+    Reposition
+}
 public class InvaderController : MonoBehaviour
 {
-    public enum InvaderState
-    {
-        Move,
-        Telegraph,
-        Attack,
-        Reposition
-    }
+    
 
     [Header("References")]
     [SerializeField] private Transform planet;
@@ -44,6 +46,14 @@ public class InvaderController : MonoBehaviour
 
     public InvaderState CurrentState { get; private set; }
         = InvaderState.Move;
+
+    public event System.Action<InvaderController>
+    IntentRevealed;
+
+    public event System.Action<InvaderController>
+        AttackStarted;
+
+    private bool attackAuthorized;
 
     private float orbitAngle;
     private float stateTimer;
@@ -171,24 +181,58 @@ public class InvaderController : MonoBehaviour
     {
         CurrentState = InvaderState.Telegraph;
         stateTimer = telegraphDuration;
+        attackAuthorized = false;
 
         if (invaderMaterial != null)
             invaderMaterial.color = telegraphColor;
 
-        Debug.Log("Invader telegraph started.");
+        Debug.Log(
+            "Invader revealed its attack intent and is waiting.",
+            this
+        );
+
+        IntentRevealed?.Invoke(this);
     }
 
     private void UpdateTelegraphState()
     {
-        stateTimer -= Time.deltaTime;
+        if (stateTimer > 0f)
+            stateTimer -= Time.deltaTime;
+
+        if (stateTimer <= 0f && attackAuthorized)
+            EnterAttackState();
+    }
+
+    public bool TryAuthorizeAttack()
+    {
+        if (CurrentState != InvaderState.Telegraph)
+        {
+            Debug.LogWarning(
+                $"{name} cannot attack because it is not Telegraphing.",
+                this
+            );
+
+            return false;
+        }
+
+        attackAuthorized = true;
+
+        Debug.Log(
+            "Invader attack authorized.",
+            this
+        );
 
         if (stateTimer <= 0f)
             EnterAttackState();
+
+        return true;
     }
 
     private void EnterAttackState()
     {
+
         CurrentState = InvaderState.Attack;
+        attackAuthorized = false;
 
         if (invaderMaterial != null)
             invaderMaterial.color = originalColor;
@@ -199,6 +243,7 @@ public class InvaderController : MonoBehaviour
                 $"{name} cannot attack because Projectile Visual is unassigned."
             );
 
+            
             EnterMoveState();
             return;
         }
@@ -211,6 +256,7 @@ public class InvaderController : MonoBehaviour
         projectileVisual.gameObject.SetActive(true);
 
         Debug.Log("Invader fired at the planet.");
+        AttackStarted?.Invoke(this);
     }
 
     private void UpdateAttackState()
@@ -307,4 +353,12 @@ public class InvaderController : MonoBehaviour
         if (invaderMaterial != null)
             Destroy(invaderMaterial);
     }
+
+
+    [ContextMenu("Test/Authorize Telegraphed Attack")]
+    private void TestAuthorizeTelegraphedAttack()
+    {
+        TryAuthorizeAttack();
+    }
+
 }
