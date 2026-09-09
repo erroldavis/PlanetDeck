@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class HandRollController : MonoBehaviour
 {
+    [Header("Startup")]
+    [SerializeField] private bool rollOnStart = true;
     [SerializeField] private PlanetReactionController planet;
     [SerializeField] private DiceRollService rollService;
     [SerializeField] private DieHandContainer hand;
@@ -16,6 +18,15 @@ public class HandRollController : MonoBehaviour
     private int arrivedDiceCount;
 
     public bool IsRolling { get; private set; }
+
+    private IEnumerator Start()
+    {
+        // Allow the hand and die visuals to finish initializing.
+        yield return null;
+
+        if (rollOnStart)
+            RollHand();
+    }
 
     [ContextMenu("Test/Roll Hand")]
     public void RollHand()
@@ -36,7 +47,22 @@ public class HandRollController : MonoBehaviour
             return;
         }
 
-        IReadOnlyList<DieBase> availableDice = hand.Dice;
+        List<DieBase> availableDice = new List<DieBase>();
+
+        foreach (DieBase die in hand.Dice)
+        {
+            if (die != null && !die.IsSpent)
+                availableDice.Add(die);
+        }
+
+        if (availableDice.Count == 0)
+        {
+            Debug.Log(
+                "No unused Material Dice remain."
+            );
+
+            return;
+        }
 
         foreach (DieBase die in availableDice)
         {
@@ -138,6 +164,7 @@ public class HandRollController : MonoBehaviour
 
         return !IsRolling
             && die != null
+            && !die.IsSpent
             && die.IsRevealed
             && die.selected
             && die.ResultValue > 0;
@@ -172,12 +199,26 @@ public class HandRollController : MonoBehaviour
 
     private void HandleLaunchArrived(DieBase die)
     {
-        die.LaunchArrivedEvent.RemoveListener(HandleLaunchArrived);
+        die.LaunchArrivedEvent.RemoveListener(
+            HandleLaunchArrived
+        );
 
-        Debug.Log($"{die.name} arrived");
+        if (die == null)
+            return;
+
+        Debug.Log($"{die.name} arrived.");
 
         if (planet == null)
+        {
+            Debug.LogWarning(
+                "Launch arrived, but Planet is unassigned."
+            );
+
             return;
+        }
+
+        // Copy the lasting effect into the planet first.
+        planet.ReceiveDie(die);
 
         if (battle != null)
         {
@@ -189,6 +230,9 @@ public class HandRollController : MonoBehaviour
                 "Launch arrived, but Battle is unassigned."
             );
         }
+
+        // The effect has been copied, so the physical die is used.
+        die.MarkSpent();
     }
 
     private IEnumerator PlayHandEntrySequence()

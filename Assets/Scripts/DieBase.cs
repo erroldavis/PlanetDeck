@@ -34,6 +34,11 @@ public class DieBase : MonoBehaviour,
     IDragHandler,
     IEndDragHandler
 {
+    [Header("Usage")]
+    [SerializeField] private bool isSpent;
+
+    public bool IsSpent => isSpent;
+
     [Header("Material Identity")]
     [SerializeField] private MaterialDieType materialType;
     [SerializeField] private MaterialCombatRole combatRole;
@@ -338,5 +343,36 @@ public class DieBase : MonoBehaviour,
             SnapToHome();
         else
             transform.SetParent(homeSlot, true);
+    }
+
+    public void MarkSpent()
+    {
+        if (isSpent)
+            return;
+
+        isSpent = true;
+
+        Deselect();
+        ClearResult();
+        SetInteractionEnabled(false);
+
+        Debug.Log(
+            $"{name} is now spent.",
+            this
+        );
+    }
+
+    [ContextMenu("Test/Reset Spent State")]
+    public void ResetSpent()
+    {
+        isSpent = false;
+
+        ClearResult();
+        SetInteractionEnabled(false);
+
+        Debug.Log(
+            $"{name} is available again.",
+            this
+        );
     }
 }

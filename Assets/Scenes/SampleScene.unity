@@ -560,7 +560,7 @@ MonoBehaviour:
   rollService: {fileID: 164510142}
   hand: {fileID: 596398533}
   rollProfile: {fileID: 11400000, guid: 1ba9a3def3dab51469d4c3c86c16dc8c, type: 2}
-  battle: {fileID: 0}
+  battle: {fileID: 1309465585}
 --- !u!1 &218637537
 GameObject:
   m_ObjectHideFlags: 0
