@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MD_SkyForge
   m_EditorClassIdentifier: Assembly-CSharp::MaterialDieDefinition
   materialType: 4
-  materialName: 
+  materialName: SkyForge
   symbol: SF
   combatRole: 3
   sideCount: 3

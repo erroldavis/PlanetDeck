@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MD_WorldFire
   m_EditorClassIdentifier: Assembly-CSharp::MaterialDieDefinition
   materialType: 6
-  materialName: 
+  materialName: Worldfire
   symbol: WF
   combatRole: 1
   sideCount: 6

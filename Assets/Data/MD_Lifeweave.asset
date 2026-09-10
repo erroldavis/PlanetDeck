@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MD_Lifeweave
   m_EditorClassIdentifier: Assembly-CSharp::MaterialDieDefinition
   materialType: 5
-  materialName: 
+  materialName: Lifeweave
   symbol: LW
   combatRole: 1
   sideCount: 4

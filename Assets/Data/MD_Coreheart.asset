@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MD_Coreheart
   m_EditorClassIdentifier: Assembly-CSharp::MaterialDieDefinition
   materialType: 3
-  materialName: 
+  materialName: Coreheart
   symbol: CH
   combatRole: 2
   sideCount: 5

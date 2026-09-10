@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MD_Tidal
   m_EditorClassIdentifier: Assembly-CSharp::MaterialDieDefinition
   materialType: 2
-  materialName: 
+  materialName: Tidal
   symbol: TD
   combatRole: 3
   sideCount: 6

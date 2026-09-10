@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MD_Stormcall
   m_EditorClassIdentifier: Assembly-CSharp::MaterialDieDefinition
   materialType: 7
-  materialName: 
+  materialName: Stormcall
   symbol: SC
   combatRole: 4
   sideCount: 2

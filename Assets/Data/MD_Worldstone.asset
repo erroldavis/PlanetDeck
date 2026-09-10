@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MD_Worldstone
   m_EditorClassIdentifier: Assembly-CSharp::MaterialDieDefinition
   materialType: 1
-  materialName: 
+  materialName: Worldstone
   symbol: WS
   combatRole: 4
   sideCount: 2

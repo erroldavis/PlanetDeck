@@ -446,4 +446,10 @@ public class DieBase : MonoBehaviour,
             transform.SetParent(homeSlot, true);
     }
 
+    public void SetDragPlane(Transform newDragPlane)
+    {
+        dragPlane = newDragPlane;
+    }
+
+
 }

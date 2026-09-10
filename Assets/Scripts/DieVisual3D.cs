@@ -103,6 +103,41 @@ public class DieVisual3D : MonoBehaviour
         isDragging = false;
     }
 
+    public void Bind(
+    DieBase newTarget,
+    Transform newHandLaunchPoint,
+    GateABattleController newBattle)
+    {
+        if (newTarget == null)
+        {
+            Debug.LogWarning(
+                $"{name} cannot bind without a logical die.",
+                this
+            );
+
+            return;
+        }
+
+        UnsubscribeFromTarget();
+
+        target = newTarget;
+        handLaunchPoint = newHandLaunchPoint;
+        battle = newBattle;
+
+        transform.SetPositionAndRotation(
+            target.transform.position,
+            target.transform.rotation
+        );
+
+        isHovering = target.isHovering;
+        isDragging = target.isDragging;
+        isSelected = target.selected;
+        isPressed = false;
+
+        if (isActiveAndEnabled)
+            SubscribeToTarget();
+    }
+
     private void SubscribeToTarget()
     {
         if (target == null)
