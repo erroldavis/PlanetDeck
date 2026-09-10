@@ -199,26 +199,28 @@ public class HandRollController : MonoBehaviour
 
     private void HandleLaunchArrived(DieBase die)
     {
+        if (die == null)
+            return;
+
         die.LaunchArrivedEvent.RemoveListener(
             HandleLaunchArrived
         );
 
-        if (die == null)
-            return;
-
         Debug.Log($"{die.name} arrived.");
 
-        if (planet == null)
+        // Preserve the result on the planet before
+        // MarkSpent clears the die's rolled value.
+        if (planet != null)
+        {
+            planet.ReceiveDie(die);
+        }
+        else
         {
             Debug.LogWarning(
-                "Launch arrived, but Planet is unassigned."
+                "Launch arrived, but Planet is unassigned.",
+                this
             );
-
-            return;
         }
-
-        // Copy the lasting effect into the planet first.
-        planet.ReceiveDie(die);
 
         if (battle != null)
         {
@@ -227,11 +229,11 @@ public class HandRollController : MonoBehaviour
         else
         {
             Debug.LogWarning(
-                "Launch arrived, but Battle is unassigned."
+                "Launch arrived, but Battle is unassigned.",
+                this
             );
         }
 
-        // The effect has been copied, so the physical die is used.
         die.MarkSpent();
     }
 

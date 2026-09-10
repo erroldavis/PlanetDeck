@@ -10,9 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d3a453a9e84895745bf0d0c14b50407b, type: 3}
-  m_Name: MD_Water
+  m_Name: MD_Coreheart
   m_EditorClassIdentifier: Assembly-CSharp::MaterialDieDefinition
-  materialName: Water
-  symbol: W
-  sideCount: 6
-  visualColor: {r: 0, g: 0, b: 1, a: 1}
+  materialType: 3
+  materialName: 
+  symbol: CH
+  combatRole: 2
+  sideCount: 5
+  visualColor: {r: 1, g: 0.5490196, b: 0, a: 1}

@@ -40,18 +40,25 @@ public class DieBase : MonoBehaviour,
     public bool IsSpent => isSpent;
 
     [Header("Material Identity")]
-    [SerializeField] private MaterialDieType materialType;
-    [SerializeField] private MaterialCombatRole combatRole;
+    [SerializeField]
+    private MaterialDieDefinition definition;
+
+    public MaterialDieDefinition Definition =>
+        definition;
 
     public MaterialDieType MaterialType =>
-        materialType;
+        definition != null
+            ? definition.MaterialType
+            : MaterialDieType.Unassigned;
 
     public MaterialCombatRole CombatRole =>
-        combatRole;
+        definition != null
+            ? definition.CombatRole
+            : MaterialCombatRole.Unassigned;
 
     public bool HasMaterialIdentity =>
-        materialType != MaterialDieType.Unassigned &&
-        combatRole != MaterialCombatRole.Unassigned;
+        definition != null &&
+        definition.IsValid;
 
     [Header("Slot")]
     [SerializeField] private Transform homeSlot;
@@ -59,7 +66,6 @@ public class DieBase : MonoBehaviour,
     [SerializeField] private Camera interactionCamera;
 
     [Header("Roll Result")]
-    [SerializeField, Min(2)] private int sideCount = 6;
     [SerializeField] private int resultValue;
     [SerializeField] private bool isRevealed;
 
@@ -67,7 +73,10 @@ public class DieBase : MonoBehaviour,
 
     public bool InteractionEnabled => interactionEnabled;
 
-    public int SideCount => Mathf.Max(2, sideCount);
+    public int SideCount =>
+    definition != null
+        ? definition.SideCount
+        : 6;
     public int ResultValue => resultValue;
     public bool IsRevealed => isRevealed;
 
@@ -122,8 +131,51 @@ public class DieBase : MonoBehaviour,
             interactionCamera = Camera.main;
     }
 
+    public bool Configure(
+    MaterialDieDefinition newDefinition)
+    {
+        if (newDefinition == null ||
+            !newDefinition.IsValid)
+        {
+            Debug.LogWarning(
+                $"{name} received an invalid Material Die definition.",
+                this
+            );
+
+            return false;
+        }
+
+        definition = newDefinition;
+        isSpent = false;
+
+        Deselect();
+        ClearResult();
+        SetInteractionEnabled(false);
+
+        gameObject.name =
+            $"Die_{definition.MaterialName}";
+
+        Debug.Log(
+            $"{name} configured as " +
+            $"{definition.MaterialType}.",
+            this
+        );
+
+        return true;
+    }
+
     public void RequestLaunch()
     {
+        if (isSpent)
+        {
+            Debug.LogWarning(
+                $"{name} cannot launch because it is spent.",
+                this
+            );
+
+            return;
+        }
+
         LaunchRequestedEvent.Invoke(this);
     }
 
@@ -184,6 +236,9 @@ public class DieBase : MonoBehaviour,
 
     public void SetSelected(bool value)
     {
+        if (value && isSpent)
+            return;
+
         if (selected == value)
             return;
 
@@ -213,6 +268,51 @@ public class DieBase : MonoBehaviour,
     {
         resultValue = 0;
         isRevealed = false;
+    }
+
+    public void MarkSpent()
+    {
+        if (isSpent)
+            return;
+
+        isSpent = true;
+
+        Deselect();
+        ClearResult();
+        SetInteractionEnabled(false);
+
+        Debug.Log(
+            $"{name} became spent.",
+            this
+        );
+    }
+
+    public void ResetSpent()
+    {
+        if (!isSpent)
+            return;
+
+        isSpent = false;
+
+        ClearResult();
+        SetInteractionEnabled(false);
+
+        Debug.Log(
+            $"{name} is available for the next hand.",
+            this
+        );
+    }
+
+    [ContextMenu("Test/Mark Spent")]
+    private void TestMarkSpent()
+    {
+        MarkSpent();
+    }
+
+    [ContextMenu("Test/Reset Spent")]
+    private void TestResetSpent()
+    {
+        ResetSpent();
     }
 
     [ContextMenu("Test/Set Result To 4")]
@@ -247,9 +347,10 @@ public class DieBase : MonoBehaviour,
         }
 
         Debug.Log(
-            $"{name}: Material = {materialType}, " +
-            $"Role = {combatRole}, " +
-            $"Result = {resultValue}.",
+            $"{name}: Material = {MaterialType}, " +
+            $"Role = {CombatRole}, " +
+            $"Sides = {SideCount}, " +
+            $"Result = {ResultValue}.",
             this
         );
     }
@@ -261,7 +362,7 @@ public class DieBase : MonoBehaviour,
 
     public void SetInteractionEnabled(bool value)
     {
-        interactionEnabled = value;
+        interactionEnabled = value && !isSpent;
 
         if (!interactionEnabled)
             isHovering = false;
@@ -345,34 +446,4 @@ public class DieBase : MonoBehaviour,
             transform.SetParent(homeSlot, true);
     }
 
-    public void MarkSpent()
-    {
-        if (isSpent)
-            return;
-
-        isSpent = true;
-
-        Deselect();
-        ClearResult();
-        SetInteractionEnabled(false);
-
-        Debug.Log(
-            $"{name} is now spent.",
-            this
-        );
-    }
-
-    [ContextMenu("Test/Reset Spent State")]
-    public void ResetSpent()
-    {
-        isSpent = false;
-
-        ClearResult();
-        SetInteractionEnabled(false);
-
-        Debug.Log(
-            $"{name} is available again.",
-            this
-        );
-    }
 }

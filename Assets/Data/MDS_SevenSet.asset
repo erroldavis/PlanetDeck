@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 984dd51e2f42abe4ebd3c6a792f1f5cb, type: 3}
+  m_Name: MDS_SevenSet
+  m_EditorClassIdentifier: Assembly-CSharp::MaterialDiceSet
+  diceToDraw: 7
+  dice:
+  - {fileID: 11400000, guid: 6447cdc1b6e91e14fac970916f43de27, type: 2}
+  - {fileID: 11400000, guid: 6c485374cfecf784797031e6b57fc6a5, type: 2}
+  - {fileID: 11400000, guid: 487f3d68c4e6e5840abac4cef9d59519, type: 2}
+  - {fileID: 11400000, guid: 376b31756c86a8146bcbdc3efb88961a, type: 2}
+  - {fileID: 11400000, guid: e5bb666058d15b641be2d2c2c63098e8, type: 2}
+  - {fileID: 11400000, guid: 2608ed915e11ef34c8a8948bdbf717c7, type: 2}
+  - {fileID: 11400000, guid: b77fcc2ca5eaf4644bcebb252e85b4ed, type: 2}

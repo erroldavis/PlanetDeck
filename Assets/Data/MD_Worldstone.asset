@@ -10,9 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d3a453a9e84895745bf0d0c14b50407b, type: 3}
-  m_Name: MD_Rock
+  m_Name: MD_Worldstone
   m_EditorClassIdentifier: Assembly-CSharp::MaterialDieDefinition
-  materialName: Rock
-  symbol: R
-  sideCount: 6
-  visualColor: {r: 0.1, g: 0.1, b: 0.1, a: 1}
+  materialType: 1
+  materialName: 
+  symbol: WS
+  combatRole: 4
+  sideCount: 2
+  visualColor: {r: 0.5450981, g: 0.2705882, b: 0.07450981, a: 1}
