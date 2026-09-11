@@ -252,7 +252,7 @@ MonoBehaviour:
   interactionCamera: {fileID: 0}
   feedbackSpeed: 15
   hoverLift: 0.08
-  selectedLift: 0.12
+  selectedLift: 0.35
   hoverScale: 1.05
   dragScale: 1.12
   dragCameraOffset: 0.08

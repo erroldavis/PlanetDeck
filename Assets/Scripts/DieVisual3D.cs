@@ -210,6 +210,8 @@ public class DieVisual3D : MonoBehaviour
         handEntryRoutine = StartCoroutine(
             PlayHandRoll()
         );
+        if (feedbackPivot != null)
+            feedbackPivot.gameObject.SetActive(true);
     }
 
     private void HandleLaunchRequested(DieBase die)
@@ -747,5 +749,7 @@ public class DieVisual3D : MonoBehaviour
         planetLaunchRoutine = null;
 
         target.NotifyLaunchArrived();
+        if (feedbackPivot != null)
+            feedbackPivot.gameObject.SetActive(false);
     }
 }

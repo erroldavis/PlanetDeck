@@ -235,6 +235,8 @@ public class HandRollController : MonoBehaviour
         }
 
         die.MarkSpent();
+        if (AreAllDiceSpent())
+            StartCoroutine(RefillHandNextFrame());
     }
 
     private IEnumerator PlayHandEntrySequence()
@@ -280,5 +282,32 @@ public class HandRollController : MonoBehaviour
         }
 
         entrySequence = null;
+    }
+
+    private bool AreAllDiceSpent()
+    {
+        if (hand == null)
+            return false;
+
+        foreach (DieBase handDie in hand.Dice)
+        {
+            if (handDie != null && !handDie.IsSpent)
+                return false;
+        }
+
+        return true;
+    }
+
+    private IEnumerator RefillHandNextFrame()
+    {
+        yield return null;
+
+        foreach (DieBase handDie in hand.Dice)
+        {
+            if (handDie != null)
+                handDie.ResetSpent();
+        }
+
+        RollHand();
     }
 }

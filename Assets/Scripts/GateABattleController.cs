@@ -17,6 +17,9 @@ public class GateABattleController : MonoBehaviour
     [Header("Gate A")]
     [SerializeField] private InvaderController activeInvader;
 
+    [Header("Prepared Defense")]
+    [SerializeField] private GameObject shieldVisual;
+
     [Header("Material Preparation")]
     [SerializeField] private Transform planetMaterialTarget;
     public InvaderController ActiveInvader =>
@@ -31,6 +34,12 @@ public class GateABattleController : MonoBehaviour
     [SerializeField]
     private GateABattlePhase currentPhase =
     GateABattlePhase.Setup;
+
+    private void Awake()
+    {
+        if (shieldVisual != null)
+            shieldVisual.SetActive(false);
+    }
 
     public bool TryGetActiveLaunchTarget(
     out Transform launchTarget)
@@ -79,11 +88,25 @@ public class GateABattleController : MonoBehaviour
             return;
         }
 
+        PreparedMaterialType = die.MaterialType;
+        PreparedCombatRole = die.CombatRole;
+        PreparedResult = die.ResultValue;
+
         Debug.Log(
-            $"{die.name} resolved with result " +
-            $"{die.ResultValue}.",
+            $"Prepared {PreparedMaterialType}: " +
+            $"Role = {PreparedCombatRole}, " +
+            $"Result = {PreparedResult}.",
             this
         );
+
+        if (shieldVisual != null)
+        {
+            bool preparedShield =
+                PreparedCombatRole ==
+                MaterialCombatRole.Defend;
+
+            shieldVisual.SetActive(preparedShield);
+        }
 
         SetPhase(GateABattlePhase.MaterialResolution);
 
@@ -237,5 +260,23 @@ public class GateABattleController : MonoBehaviour
             return;
 
         SetPhase(GateABattlePhase.InvaderAttack);
+    }
+
+    public MaterialDieType PreparedMaterialType
+    {
+        get;
+        private set;
+    } = MaterialDieType.Unassigned;
+
+    public MaterialCombatRole PreparedCombatRole
+    {
+        get;
+        private set;
+    } = MaterialCombatRole.Unassigned;
+
+    public int PreparedResult
+    {
+        get;
+        private set;
     }
 }
