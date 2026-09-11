@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: HRP_Staggered
   m_EditorClassIdentifier: Assembly-CSharp::HandRollProfile
   mode: 1
-  staggerDelay: 0.12
+  staggerDelay: 0.15

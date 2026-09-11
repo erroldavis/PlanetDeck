@@ -7,6 +7,9 @@ public class DieVisual3D : MonoBehaviour
     [Header("Hand Entry")]
     [SerializeField] private Transform handLaunchPoint;
 
+    [Header("Material Appearance")]
+    [SerializeField] private Renderer dieRenderer;
+
     [Header("Planet Launch")]
     [SerializeField] private GateABattleController battle;
 
@@ -123,6 +126,12 @@ public class DieVisual3D : MonoBehaviour
         target = newTarget;
         handLaunchPoint = newHandLaunchPoint;
         battle = newBattle;
+
+        if (dieRenderer != null && target.Definition != null)
+        {
+            dieRenderer.material.color =
+                target.Definition.VisualColor;
+        }
 
         transform.SetPositionAndRotation(
             target.transform.position,

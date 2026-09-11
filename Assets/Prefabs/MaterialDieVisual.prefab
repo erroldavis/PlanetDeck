@@ -232,6 +232,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DieVisual3D
   handLaunchPoint: {fileID: 0}
+  dieRenderer: {fileID: 6466384401077991406}
   battle: {fileID: 0}
   target: {fileID: 0}
   followSpeed: 15

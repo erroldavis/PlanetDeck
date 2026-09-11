@@ -17,4 +17,4 @@ MonoBehaviour:
   symbol: SC
   combatRole: 4
   sideCount: 2
-  visualColor: {r: 0.9411765, g: 0.9019608, b: 0.5490196, a: 1}
+  visualColor: {r: 0.2941177, g: 0, b: 0.509804, a: 1}
