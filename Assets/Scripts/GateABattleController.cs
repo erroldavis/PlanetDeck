@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public enum GateABattlePhase
 {
@@ -254,12 +255,13 @@ public class GateABattleController : MonoBehaviour
     }
 
     private void HandleInvaderAttackStarted(
-        InvaderController invader)
+    InvaderController invader)
     {
         if (invader != activeInvader)
             return;
 
         SetPhase(GateABattlePhase.InvaderAttack);
+        SetPhase(GateABattlePhase.ActiveDefense);
     }
 
     public MaterialDieType PreparedMaterialType
@@ -278,5 +280,60 @@ public class GateABattleController : MonoBehaviour
     {
         get;
         private set;
+    }
+
+
+    private void Update()
+    {
+        if (currentPhase !=
+            GateABattlePhase.ActiveDefense)
+        {
+            return;
+        }
+
+        if (
+            Keyboard.current != null &&
+            Keyboard.current.spaceKey.wasPressedThisFrame
+        )
+        {
+            Debug.Log(
+                "Defend input detected.",
+                this
+            );
+            TryActiveDefense();
+        }
+    }
+
+    private void TryActiveDefense()
+    {
+        if (PreparedCombatRole !=
+            MaterialCombatRole.Defend)
+        {
+            Debug.Log(
+                "Defend pressed, but no Shield was prepared.",
+                this
+            );
+
+            return;
+        }
+
+        if (
+            activeInvader == null ||
+            !activeInvader.TryBlockProjectile()
+        )
+        {
+            return;
+        }
+
+        if (shieldVisual != null)
+            shieldVisual.SetActive(false);
+
+        Debug.Log(
+            "Shield successfully blocked the attack.",
+            this
+        );
+
+        SetPhase(GateABattlePhase.Consequence);
+        SetPhase(GateABattlePhase.Reposition);
     }
 }

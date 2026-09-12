@@ -279,6 +279,28 @@ public class InvaderController : MonoBehaviour
             CompleteProjectileAttack();
     }
 
+    public bool TryBlockProjectile()
+    {
+        if (
+            CurrentState != InvaderState.Attack ||
+            projectileVisual == null ||
+            !projectileVisual.gameObject.activeSelf
+        )
+        {
+            return false;
+        }
+
+        projectileVisual.gameObject.SetActive(false);
+
+        Debug.Log(
+            "Invader projectile was blocked.",
+            this
+        );
+
+        EnterRepositionState();
+        return true;
+    }
+
     private void CompleteProjectileAttack()
     {
         projectileVisual.gameObject.SetActive(false);
