@@ -20,6 +20,7 @@ public class GateABattleController : MonoBehaviour
 
     [Header("Prepared Defense")]
     [SerializeField] private GameObject shieldVisual;
+    [SerializeField] private GameObject defenseWindowVisual;
 
     [Header("Material Preparation")]
     [SerializeField] private Transform planetMaterialTarget;
@@ -40,6 +41,8 @@ public class GateABattleController : MonoBehaviour
     {
         if (shieldVisual != null)
             shieldVisual.SetActive(false);
+        if (defenseWindowVisual != null)
+            defenseWindowVisual.SetActive(false);
     }
 
     public bool TryGetActiveLaunchTarget(
@@ -230,6 +233,12 @@ public class GateABattleController : MonoBehaviour
 
         activeInvader.AttackStarted +=
             HandleInvaderAttackStarted;
+
+        activeInvader.DefenseWindowOpened +=
+            HandleDefenseWindowOpened;
+
+        activeInvader.ProjectileHitPlanet +=
+            HandleProjectileHitPlanet;
     }
 
     private void OnDisable()
@@ -242,6 +251,12 @@ public class GateABattleController : MonoBehaviour
 
         activeInvader.AttackStarted -=
             HandleInvaderAttackStarted;
+
+        activeInvader.DefenseWindowOpened -=
+            HandleDefenseWindowOpened;
+
+        activeInvader.ProjectileHitPlanet -=
+            HandleProjectileHitPlanet;
     }
 
     private void HandleInvaderIntentRevealed(
@@ -259,9 +274,42 @@ public class GateABattleController : MonoBehaviour
     {
         if (invader != activeInvader)
             return;
+        if (defenseWindowVisual != null)
+            defenseWindowVisual.SetActive(false);
 
         SetPhase(GateABattlePhase.InvaderAttack);
+    }
+
+    private void HandleDefenseWindowOpened(
+    InvaderController invader)
+    {
+        if (invader != activeInvader)
+            return;
+
+        if (PreparedCombatRole ==
+            MaterialCombatRole.Defend &&
+            defenseWindowVisual != null)
+        {
+            defenseWindowVisual.SetActive(true);
+        }
+
         SetPhase(GateABattlePhase.ActiveDefense);
+    }
+
+    private void HandleProjectileHitPlanet(
+    InvaderController invader)
+    {
+        if (invader != activeInvader)
+            return;
+
+        if (shieldVisual != null)
+            shieldVisual.SetActive(false);
+        if (defenseWindowVisual != null)
+            defenseWindowVisual.SetActive(false);
+
+
+        SetPhase(GateABattlePhase.Consequence);
+        SetPhase(GateABattlePhase.Reposition);
     }
 
     public MaterialDieType PreparedMaterialType
@@ -327,6 +375,8 @@ public class GateABattleController : MonoBehaviour
 
         if (shieldVisual != null)
             shieldVisual.SetActive(false);
+        if (defenseWindowVisual != null)
+            defenseWindowVisual.SetActive(false);
 
         Debug.Log(
             "Shield successfully blocked the attack.",

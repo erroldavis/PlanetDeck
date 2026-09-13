@@ -184,12 +184,27 @@ public class HandRollController : MonoBehaviour
     {
         if (!TryGetReadyDie(out DieBase die))
         {
-            Debug.Log("Launch ignored. No revealed selected die.");
+            Debug.Log(
+                "Launch ignored. No revealed selected die."
+            );
+
+            return;
+        }
+
+        if (battle == null ||
+            !battle.TryGetActiveLaunchTarget(out _))
+        {
+            Debug.Log(
+                "Launch ignored. Wait for Player Preparation.",
+                this
+            );
+
             return;
         }
 
         Debug.Log(
-            $"{die.name} launched with result {die.ResultValue}."
+            $"{die.name} launched with result " +
+            $"{die.ResultValue}."
         );
 
         die.LaunchArrivedEvent.RemoveListener(HandleLaunchArrived);

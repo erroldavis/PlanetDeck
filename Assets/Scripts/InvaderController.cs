@@ -35,7 +35,10 @@ public class InvaderController : MonoBehaviour
     [SerializeField, Min(0.1f)] private float projectileSpeed = 6f;
     [SerializeField, Min(1)] private int attackDamage = 10;
     [SerializeField, Min(0.01f)] private float projectileHitDistance = 0.05f;
+    [SerializeField, Min(0.05f)]
+    private float defenseWindowDuration = 0.5f;
 
+    private bool defenseWindowOpened;
     private Vector3 attackTargetPosition;
 
     [Header("Reposition")]
@@ -52,6 +55,12 @@ public class InvaderController : MonoBehaviour
 
     public event System.Action<InvaderController>
         AttackStarted;
+
+    public event System.Action<InvaderController>
+    DefenseWindowOpened;
+
+    public event System.Action<InvaderController>
+    ProjectileHitPlanet;
 
     private bool attackAuthorized;
 
@@ -230,9 +239,11 @@ public class InvaderController : MonoBehaviour
 
     private void EnterAttackState()
     {
-
         CurrentState = InvaderState.Attack;
         attackAuthorized = false;
+
+        stateTimer = defenseWindowDuration;
+        defenseWindowOpened = true;
 
         if (invaderMaterial != null)
             invaderMaterial.color = originalColor;
@@ -240,28 +251,55 @@ public class InvaderController : MonoBehaviour
         if (projectileVisual == null)
         {
             Debug.LogWarning(
-                $"{name} cannot attack because Projectile Visual is unassigned."
+                $"{name} cannot attack because Projectile Visual is unassigned.",
+                this
             );
 
-            
             EnterMoveState();
             return;
         }
 
-        Vector3 spawnPosition = projectileSpawnPoint != null
+        Vector3 spawnPosition =
+            projectileSpawnPoint != null
             ? projectileSpawnPoint.position
             : transform.position;
 
         projectileVisual.position = spawnPosition;
-        projectileVisual.gameObject.SetActive(true);
+        projectileVisual.gameObject.SetActive(false);
 
-        Debug.Log("Invader fired at the planet.");
-        AttackStarted?.Invoke(this);
+        Debug.Log(
+            "Invader is preparing to attack.",
+            this
+        );
+
+        DefenseWindowOpened?.Invoke(this);
     }
 
     private void UpdateAttackState()
     {
         if (projectileVisual == null)
+            return;
+
+        if (defenseWindowOpened)
+        {
+            stateTimer -= Time.deltaTime;
+
+            if (stateTimer > 0f)
+                return;
+
+            defenseWindowOpened = false;
+            projectileVisual.gameObject.SetActive(true);
+
+            Debug.Log(
+                "Defense window expired. Invader fired.",
+                this
+            );
+
+            AttackStarted?.Invoke(this);
+            return;
+        }
+
+        if (!projectileVisual.gameObject.activeSelf)
             return;
 
         projectileVisual.position = Vector3.MoveTowards(
@@ -279,21 +317,24 @@ public class InvaderController : MonoBehaviour
             CompleteProjectileAttack();
     }
 
+
     public bool TryBlockProjectile()
     {
         if (
             CurrentState != InvaderState.Attack ||
-            projectileVisual == null ||
-            !projectileVisual.gameObject.activeSelf
+            !defenseWindowOpened
         )
         {
             return false;
         }
 
-        projectileVisual.gameObject.SetActive(false);
+        defenseWindowOpened = false;
+
+        if (projectileVisual != null)
+            projectileVisual.gameObject.SetActive(false);
 
         Debug.Log(
-            "Invader projectile was blocked.",
+            "Invader attack was blocked before firing.",
             this
         );
 
@@ -317,6 +358,7 @@ public class InvaderController : MonoBehaviour
         }
 
         Debug.Log("Invader projectile reached the planet.");
+        ProjectileHitPlanet?.Invoke(this);
 
         // Temporary until Reposition is implemented.
         EnterRepositionState();
