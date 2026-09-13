@@ -231,7 +231,6 @@ public class InvaderController : MonoBehaviour
             this
         );
 
-        if (stateTimer <= 0f)
             EnterAttackState();
 
         return true;

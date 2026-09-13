@@ -2246,7 +2246,7 @@ MonoBehaviour:
   projectileSpeed: 1
   attackDamage: 10
   projectileHitDistance: 0.05
-  defenseWindowDuration: 0.5
+  defenseWindowDuration: 1
   repositionAngle: 90
   repositionSpeed: 120
   dieImpactTarget: {fileID: 2081234687}

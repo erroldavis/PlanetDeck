@@ -251,7 +251,7 @@ public class HandRollController : MonoBehaviour
 
         die.MarkSpent();
         if (AreAllDiceSpent())
-            StartCoroutine(RefillHandNextFrame());
+            StartCoroutine(RefillHandAfterBattle());
     }
 
     private IEnumerator PlayHandEntrySequence()
@@ -313,8 +313,16 @@ public class HandRollController : MonoBehaviour
         return true;
     }
 
-    private IEnumerator RefillHandNextFrame()
+    private IEnumerator RefillHandAfterBattle()
     {
+        if (battle != null)
+        {
+            yield return new WaitUntil(
+                () => battle.CurrentPhase ==
+                      GateABattlePhase.PlayerPreparation
+            );
+        }
+
         yield return null;
 
         foreach (DieBase handDie in hand.Dice)
