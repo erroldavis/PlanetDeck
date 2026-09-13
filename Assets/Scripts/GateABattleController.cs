@@ -103,6 +103,18 @@ public class GateABattleController : MonoBehaviour
             this
         );
 
+        if (PreparedCombatRole ==
+            MaterialCombatRole.Attack)
+        {
+            if (activeInvader.TryGetComponent(
+                out InvaderHealth invaderHealth))
+            {
+                invaderHealth.TakeDamage(
+                    PreparedResult
+                );
+            }
+        }
+
         if (shieldVisual != null)
         {
             bool preparedShield =

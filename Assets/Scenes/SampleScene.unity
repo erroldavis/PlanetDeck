@@ -2212,6 +2212,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1768281227}
+  - component: {fileID: 1768281228}
   - component: {fileID: 1768281226}
   m_Layer: 0
   m_Name: Invader
@@ -2243,7 +2244,7 @@ MonoBehaviour:
   telegraphColor: {r: 1, g: 0.7737833, b: 0, a: 1}
   projectileSpawnPoint: {fileID: 805451328}
   projectileVisual: {fileID: 1157244427}
-  projectileSpeed: 1
+  projectileSpeed: 3
   attackDamage: 10
   projectileHitDistance: 0.05
   defenseWindowDuration: 1
@@ -2270,6 +2271,20 @@ Transform:
   - {fileID: 1309465584}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1768281228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1768281225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b256cc832eb4924392a7fcfa1fc626e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InvaderHealth
+  maxHealth: 10
+  currentHealth: 10
 --- !u!1 &1910737295
 GameObject:
   m_ObjectHideFlags: 0
