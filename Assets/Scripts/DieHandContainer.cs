@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class DieHandContainer : MonoBehaviour
 {
+    [Header("Launch")]
+    [SerializeField] private HandRollController handRollController;
+
     [Header("Hand Settings")]
     [SerializeField, Min(1)] private int handCapacity = 4;
     public int HandCapacity => handCapacity;
@@ -176,6 +179,8 @@ public class DieHandContainer : MonoBehaviour
 
         die.SetSelected(true);
         selectedDie = die;
+        if (handRollController != null)
+            handRollController.Launch();
     }
 
     private void Update()

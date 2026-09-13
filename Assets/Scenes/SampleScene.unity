@@ -753,7 +753,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &577928960
 RectTransform:
   m_ObjectHideFlags: 0
@@ -817,19 +817,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 577928962}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 197302293}
-        m_TargetAssemblyTypeName: HandRollController, Assembly-CSharp
-        m_MethodName: Launch
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &577928962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1077,6 +1065,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31c35845dee325849aba2ee0a4debd37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DieHandContainer
+  handRollController: {fileID: 197302293}
   handCapacity: 7
   slots:
   - {fileID: 756572268}
@@ -2252,7 +2241,7 @@ MonoBehaviour:
   telegraphColor: {r: 1, g: 0.7737833, b: 0, a: 1}
   projectileSpawnPoint: {fileID: 805451328}
   projectileVisual: {fileID: 1157244427}
-  projectileSpeed: 6
+  projectileSpeed: 1
   attackDamage: 10
   projectileHitDistance: 0.05
   repositionAngle: 90
